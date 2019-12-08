@@ -26,4 +26,4 @@ https://dsci-532-group108-milestone3.herokuapp.com/
 
 ## APP Screenshot
 
-![](img/App-Deployed-2.png)
+![](img/App-Deployed.png)
