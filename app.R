@@ -3,6 +3,9 @@ library(dashCoreComponents)
 library(dashHtmlComponents)
 library(tidyverse)
 library(plotly)
+library(scales)
+library(sf)
+library(geojsonio)
 
 df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
@@ -13,6 +16,48 @@ min_year = df['YEAR'] %>% min()
 max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
 names(yearMarks) <- unique(unique(df$YEAR))
+
+vancouver <- sf::st_read('data/our_geojson_modified.geojson')
+crime <- read_csv("data/crimedata_csv_all_years_modified.csv")
+crime$HUNDRED_BLOCK <- NULL
+crime$X <- NULL
+crime$Y <- NULL
+
+crime <- crime %>% 
+    group_by(NEIGHBOURHOOD, TYPE, YEAR) %>%
+    summarise(COUNT = n())
+
+plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'all', crime_threshold = 1) {
+    crime_cnt <- crime %>% 
+        filter(YEAR >= year_init & YEAR <= year_end)
+    
+    if(crime_type != 'all') {
+        crime_cnt <- crime_cnt %>%
+            filter(TYPE == crime_type)
+    }
+    crime_cnt <- crime_cnt %>% 
+        group_by(NEIGHBOURHOOD) %>%
+        summarise(sum = sum(COUNT)) %>%
+        mutate(min_max = (sum - min(sum)) / (max(sum) - min(sum)))
+    
+    full_dt <- full_join(vancouver, crime_cnt, by = c('NEIGHBOURHOOD', 'NEIGHBOURHOOD'))
+    ggplotly(full_dt %>%
+        ggplot(mapping = aes(fill = .data[['min_max']])) +
+        geom_sf(color = 'white', size = 0.2) +
+        scale_fill_viridis_c(option = 'viridis', 
+                             name = "Crime Index", 
+                             labels = comma, 
+                             limits = c(0, crime_threshold)) +
+        labs(title = paste("crime type =", crime_type)))
+}
+graph_choropleth <- dccGraph(
+  id = 'choropleth',
+  figure=plot_choropleth() # gets initial data using argument defaults
+)
+
+
+types <- unique(crime$TYPE)
+plot_choropleth(year_init = 2016, crime_type = types[3], crime_threshold = 0.3)
 
 app <- Dash$new()
 
@@ -60,11 +105,12 @@ app$layout(
                 ),
                 htmlDiv(
                     list(
-                        htmlIframe(
+#                         htmlIframe(
 
-                            # Choroplepth HERE, might be able to change to graph object instead of Iframe
+#                             # Choroplepth HERE, might be able to change to graph object instead of Iframe
 
-                        ),
+#                         ),
+                        graph_choropleth,
                         htmlDiv(
                             list(
                                 htmlH4('Crime Index Max'),
