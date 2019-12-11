@@ -7,7 +7,7 @@ library(scales)
 library(sf)
 library(geojsonio)
 
-df <- read_csv('DSCI-532-Group108-R/data/crimedata_csv_all_years_modified.csv')
+df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
 list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL')
 list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL')
@@ -17,10 +17,10 @@ max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
 names(yearMarks) <- unique(unique(df$YEAR))
 
-df_new <- read_csv('DSCI-532-Group108-R/data/crimedata_csv_all_years_modified.csv')
+df_new <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
-vancouver <- sf::st_read('DSCI-532-Group108-R/data/our_geojson_modified.geojson')
-crime <- read_csv("DSCI-532-Group108-R/data/crimedata_csv_all_years_modified.csv")
+vancouver <- sf::st_read('data/our_geojson_modified.geojson')
+crime <- read_csv("data/crimedata_csv_all_years_modified.csv")
 crime$HUNDRED_BLOCK <- NULL
 crime$X <- NULL
 crime$Y <- NULL
@@ -70,7 +70,7 @@ plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', ne
                 neighbourhood_1_title = 'All Neighbourhoods'
                     df1 <- df %>% 
                         group_by({{time_scale}}) %>%
-                        tally() %>% 
+                tally() %>% 
     mutate({{time_scale}} := as.factor({{time_scale}}))
 
             } else {
@@ -95,7 +95,7 @@ plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', ne
                 filter((NEIGHBOURHOOD == neighbourhood_1 & TYPE == crime)) %>%
                 group_by({{time_scale}}) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}})) 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
         
     }
 }
@@ -106,7 +106,7 @@ plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', ne
                 neighbourhood_2_title = 'All Neighbourhoods'
                 df2 <- df %>% 
                     group_by({{time_scale}}) %>%
-                    tally() %>% 
+                tally() %>% 
     mutate({{time_scale}} := as.factor({{time_scale}}))
                 
         } else {
@@ -134,12 +134,12 @@ plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', ne
     mutate({{time_scale}} := as.factor({{time_scale}}))
     }
                     }
-    ggplot() +
+    ggplotly(ggplot() +
         geom_line(df1, mapping = aes(x={{time_scale}}, y=n, group=1), color='blue') +
         geom_line(df2, mapping = aes(x={{time_scale}}, y=n, group=1), color='red') +
         ylab('Number of Crimes') +
         ggtitle(paste(neighbourhood_1_title, "vs", neighbourhood_2_title, ":", crime_title)) +
-        theme_bw()
+        theme_bw())
 }
 
 graph_line <- dccGraph(
