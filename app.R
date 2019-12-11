@@ -258,13 +258,8 @@ app$layout(
                             options = lapply(list_of_years, function(x){list(label=x, value=x)}),
                             value = 'YEAR',
                             style = list(width = '90%', verticalAlign = "middle")
-                        )
+                        ),
                         # Crime Trend Graph Object HERE
-
-                    )
-                ),
-                htmlDiv(
-                    list(
                         graph_line
                     )
                 )
