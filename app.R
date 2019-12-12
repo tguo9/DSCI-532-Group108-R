@@ -17,6 +17,8 @@ max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
 names(yearMarks) <- unique(unique(df$YEAR))
 
+df_new <- read_csv('data/crimedata_csv_all_years_modified.csv')
+
 vancouver <- sf::st_read('data/our_geojson_modified.geojson')
 crime <- read_csv("data/crimedata_csv_all_years_modified.csv")
 crime$HUNDRED_BLOCK <- NULL
@@ -55,10 +57,99 @@ graph_choropleth <- dccGraph(
   figure=plot_choropleth() # gets initial data using argument defaults
 )
 
+plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
+    
+    df <- df %>% filter(YEAR >= start & YEAR <= end)
+    crime_title = crime
+    neighbourhood_1_title = neighbourhood_1
+    neighbourhood_2_title = neighbourhood_2
+    
+    if (crime == 'ALL') {
+            crime_title = 'All Crimes'
+            if (neighbourhood_1 == 'ALL') {
+                neighbourhood_1_title = 'All Neighbourhoods'
+                    df1 <- df %>% 
+                        group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+
+            } else {
+                df1 <- df %>% 
+                    filter(NEIGHBOURHOOD == neighbourhood_1) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+        }   
+    } else {
+    
+    if (neighbourhood_1 == 'ALL') {
+                neighbourhood_1_title = 'All Neighbourhoods'
+                df1 <- df %>% 
+                filter(TYPE == crime) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+            
+        } else {
+            df1 <- df %>% 
+                filter((NEIGHBOURHOOD == neighbourhood_1 & TYPE == crime)) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+        
+    }
+}
+
+    if (crime == 'ALL') {
+        crime_title = 'All Crimes'
+        if (neighbourhood_2 == 'ALL') {
+                neighbourhood_2_title = 'All Neighbourhoods'
+                df2 <- df %>% 
+                    group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+                
+        } else {
+            df2 <- df %>% 
+                filter(NEIGHBOURHOOD == neighbourhood_2) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+        }   
+    } else {
+        
+        if (neighbourhood_2 == 'ALL') {
+                neighbourhood_2_title = 'All Neighbourhoods'
+                df2 <- df %>% 
+                filter(TYPE == crime) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+            
+        } else {
+            df2 <- df %>% 
+                filter((NEIGHBOURHOOD == neighbourhood_2 & TYPE == crime)) %>%
+                group_by({{time_scale}}) %>%
+                tally() %>% 
+    mutate({{time_scale}} := as.factor({{time_scale}}))
+    }
+                    }
+    ggplotly(ggplot() +
+        geom_line(df1, mapping = aes(x={{time_scale}}, y=n, group=1), color='blue') +
+        geom_line(df2, mapping = aes(x={{time_scale}}, y=n, group=1), color='red') +
+        ylab('Number of Crimes') +
+        ggtitle(paste(neighbourhood_1_title, "vs", neighbourhood_2_title, ":", crime_title)) +
+        theme_bw())
+}
+
+graph_line <- dccGraph(
+  id = 'line_chart',
+  figure=plot_func() # gets initial data using argument defaults
+)
 
 types <- unique(crime$TYPE)
 plot_choropleth(year_init = 2016, crime_type = types[3], crime_threshold = 0.3)
-
+plot_func()
 app <- Dash$new()
 
 app$layout(
@@ -167,10 +258,9 @@ app$layout(
                             options = lapply(list_of_years, function(x){list(label=x, value=x)}),
                             value = 'YEAR',
                             style = list(width = '90%', verticalAlign = "middle")
-                        )
-
+                        ),
                         # Crime Trend Graph Object HERE
-
+                        graph_line
                     )
                 )
             )
