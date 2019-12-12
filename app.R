@@ -11,7 +11,7 @@ df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
 list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL')
 list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL')
-list_of_years = list('YEAR', 'MONTH', 'DAY OF WEEK', 'HOUR')
+list_of_years = list('YEAR', 'MONTH', 'DAY_OF_WEEK', 'HOUR')
 min_year = df['YEAR'] %>% min()
 max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
@@ -27,11 +27,11 @@ crime <- crime %>%
     group_by(NEIGHBOURHOOD, TYPE, YEAR) %>%
     summarise(COUNT = n())
 
-plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'all', crime_threshold = 1) {
+plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'ALL', crime_threshold = 1) {
     crime_cnt <- crime %>% 
         filter(YEAR >= year_init & YEAR <= year_end)
     
-    if(crime_type != 'all') {
+    if(crime_type != 'ALL') {
         crime_cnt <- crime_cnt %>%
             filter(TYPE == crime_type)
     }
@@ -55,9 +55,9 @@ graph_choropleth <- dccGraph(
   figure=plot_choropleth() # gets initial data using argument defaults
 )
 
-plot_func <- function(df_1=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
+plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
     
-    df_1 <- df_1 %>% filter(YEAR >= start & YEAR <= end)
+    df <- df_line %>% filter(YEAR >= start & YEAR <= end)
     crime_title = crime
     neighbourhood_1_title = neighbourhood_1
     neighbourhood_2_title = neighbourhood_2
@@ -266,5 +266,25 @@ app$layout(
     )
   )
 )
+
+app$callback(
+  output=list(id = 'line_chart', property='figure'),
+  params=list(input(id = 'year-slider', property='value'),
+              input(id = 'dd-chart', property='value'),
+              input(id = 'dd-chart-2', property='value'),
+              input(id = 'crime-chart', property='value'),
+              input(id = 'year-chart', property='value')),
+  function(year_range, location, location2, types, year) {
+    plot_func(start=year_range[1], end=year_range[2], neighbourhood_1=location, neighbourhood_2=location2, crime=types, time_scale=!!sym(year))
+  })
+
+app$callback(
+  output=list(id = 'choropleth', property='figure'),
+  params=list(input(id = 'year-slider', property='value'),
+              input(id = 'crime-chart', property='value'),
+              input(id = 'slider-updatemode', property='value')),
+  function(year_range, crime_type, crime_thresh) {
+    plot_choropleth(year_init = year_range[1], year_end = year_range[2], crime_type = crime_type, crime_threshold = crime_thresh)
+  })
 
 app$run_server()
