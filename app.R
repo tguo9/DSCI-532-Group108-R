@@ -17,8 +17,6 @@ max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
 names(yearMarks) <- unique(unique(df$YEAR))
 
-df_new <- read_csv('data/crimedata_csv_all_years_modified.csv')
-
 vancouver <- sf::st_read('data/our_geojson_modified.geojson')
 crime <- read_csv("data/crimedata_csv_all_years_modified.csv")
 crime$HUNDRED_BLOCK <- NULL
@@ -57,9 +55,9 @@ graph_choropleth <- dccGraph(
   figure=plot_choropleth() # gets initial data using argument defaults
 )
 
-plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
+plot_func <- function(df_1=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
     
-    df <- df %>% filter(YEAR >= start & YEAR <= end)
+    df_1 <- df_1 %>% filter(YEAR >= start & YEAR <= end)
     crime_title = crime
     neighbourhood_1_title = neighbourhood_1
     neighbourhood_2_title = neighbourhood_2
@@ -68,7 +66,7 @@ plot_func <- function(df=df_new, start=2010, end=2018, neighbourhood_1='ALL', ne
             crime_title = 'All Crimes'
             if (neighbourhood_1 == 'ALL') {
                 neighbourhood_1_title = 'All Neighbourhoods'
-                    df1 <- df %>% 
+                    df1 <- df_1 %>% 
                         group_by({{time_scale}}) %>%
                 tally() %>% 
     mutate({{time_scale}} := as.factor({{time_scale}}))
