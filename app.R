@@ -66,7 +66,7 @@ plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', n
             crime_title = 'All Crimes'
             if (neighbourhood_1 == 'ALL') {
                 neighbourhood_1_title = 'All Neighbourhoods'
-                    df1 <- df_1 %>% 
+                    df1 <- df %>% 
                         group_by({{time_scale}}) %>%
                 tally() %>% 
     mutate({{time_scale}} := as.factor({{time_scale}}))
