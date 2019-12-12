@@ -287,4 +287,4 @@ app$callback(
     plot_choropleth(year_init = year_range[1], year_end = year_range[2], crime_type = crime_type, crime_threshold = crime_thresh)
   })
 
-app$run_server()
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
