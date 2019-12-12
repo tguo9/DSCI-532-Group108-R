@@ -5,3 +5,6 @@ libprotobuf-dev
 libv8-dev
 libjq-dev
 protobuf-compiler
+libudunits2-0
+libudunits2-dev
+libgdal-dev
