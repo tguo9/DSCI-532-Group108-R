@@ -11,7 +11,7 @@ df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
 list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL')
 list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL')
-list_of_years = list('YEAR', 'MONTH', 'DAY_OF_WEEK', 'HOUR')
+list_of_years = list('YEAR', 'MONTH', 'DAY OF WEEK', 'HOUR')
 min_year = df['YEAR'] %>% min()
 max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
@@ -57,12 +57,16 @@ graph_choropleth <- dccGraph(
 
 plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale='YEAR') {
     # !!sym(time_scale)
-    # time_scale <- 
 
     df <- df_line %>% filter(YEAR >= start & YEAR <= end)
     crime_title = crime
     neighbourhood_1_title = neighbourhood_1
     neighbourhood_2_title = neighbourhood_2
+
+    if (time_scale == 'DAY OF WEEK') {
+
+        time_scale <- 'DAY_OF_WEEK'
+    }
     
     if (crime == 'ALL') {
             crime_title = 'All Crimes'
