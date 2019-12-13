@@ -48,7 +48,7 @@ plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'ALL
                              name = "Crime Index", 
                              labels = comma, 
                              limits = c(0, crime_threshold)) +
-        labs(title = paste("crime type =", crime_type)))
+        labs(title = paste("Crime Type =", crime_type)))
 }
 graph_choropleth <- dccGraph(
   id = 'choropleth',
@@ -163,11 +163,11 @@ app$layout(
         # Header
         htmlDiv(
           list(
-              htmlImg(src='https://img.icons8.com/wired/64/000000/policeman-male.png'),
-              htmlH1('Vancouver Crime Stats'),
-              htmlDiv(children="Open source crime data from the City of Vancouver shown for neighbourhood comparison")
-              )
-            
+              htmlImg(src='https://img.icons8.com/wired/64/000000/policeman-male.png', style = list(float = 'left', marginTop = '10px', marginLeft = '8px')),
+              htmlH1('Vancouver Crime Stats', style = list(float = 'left', marginLeft = '15px')),
+              htmlDiv(children="Open source crime data from the City of Vancouver shown for neighbourhood comparison", style = list(position = 'absolute', float = 'left', marginTop = '60px', marginLeft = '90px'))
+              ),
+           style = list(position = 'absolute', width = '96%', height = '90px', backgroundColor = '#9ee6f6', border = '3px solid black')
         ),
 
         # Crime Map
@@ -194,18 +194,20 @@ app$layout(
                                     marks = yearMarks,
                                     value = list(min_year, max_year)
                                     )
-                                )
+                                ),
+                            style = list(width = '60%', marginLeft = '20px')
                         )
-                    )
+                    ),
+                    style = list(height = '200px', marginLeft = '20px')
                 ),
                 htmlDiv(
                     list(
-#                         htmlIframe(
-
-#                             # Choroplepth HERE, might be able to change to graph object instead of Iframe
-
-#                         ),
-                        graph_choropleth,
+                        htmlDiv(
+                            list(
+                                graph_choropleth
+                            ),
+                            style = list(width = '80%', height = '500px', float = 'left')
+                        ),
                         htmlDiv(
                             list(
                                 htmlH4('Crime Index Max'),
@@ -216,10 +218,11 @@ app$layout(
                                     max = 1,
                                     step = 0.01,
                                     updatemode = 'drag',
-                                    vertical = FALSE,
+                                    vertical = TRUE,
                                     value = 1
                                 )
-                            )
+                            ),
+                            style = list(height = '200px', float = 'left', marginLeft = '30px', marginTop = '10px')
                         )
                     )
                 ),
@@ -230,9 +233,11 @@ app$layout(
                         htmlP('- If it equals 0, then this neighborhood has the lowest crime count among all neighborhoods'),
                         htmlP('Adjusting the \"Crime Index Max\" bar can saturate neighborhoods with higher crime counts and reveal differences in lower crime count neighbourhoods'),
                         htmlP('Note that this function is slow and may take a few seconds to load')
-                    )
+                    ),
+                    style = list(width = '900px')
                 )
-            )
+            ),
+            style = list(float = 'left', width = '60%', height = '900px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
         ),
 
         # Crime Trends
@@ -262,12 +267,18 @@ app$layout(
                             options = lapply(list_of_years, function(x){list(label=x, value=x)}),
                             value = 'YEAR',
                             style = list(width = '90%', verticalAlign = "middle")
-                        ),
-                        # Crime Trend Graph Object HERE
+                        )
+                    ),
+                    style = list(height = '300px', marginLeft = '20px')
+                ),
+                htmlDiv(
+                    list(
                         graph_line
-                    )
+                    ),
+                    style = list(width = '95%', height = '500px')
                 )
-            )
+            ),
+            style = list(float  = 'left', width = '36.5%', height = '900px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
         )
     )
   )
