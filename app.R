@@ -46,14 +46,14 @@ plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'ALL
         geom_sf(color = 'white', size = 0.2) +
         scale_fill_gradient(low = '#CAFFA8',
                             high = '#8B0000', 
-                             name = "Crime Index", 
-                             labels = comma, 
-                             limits = c(0, crime_threshold)) +
+                                name = "Crime Index", 
+                                labels = comma, 
+                                limits = c(0, crime_threshold)) +
         labs(title = paste("Crime Type =", crime_type)))
 }
 graph_choropleth <- dccGraph(
-  id = 'choropleth',
-  figure=plot_choropleth() # gets initial data using argument defaults
+    id = 'choropleth',
+    figure=plot_choropleth() # gets initial data using argument defaults
 )
 
 plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale='YEAR') {
@@ -148,8 +148,8 @@ plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', n
 }
 
 graph_line <- dccGraph(
-  id = 'line_chart',
-  figure=plot_func() # gets initial data using argument defaults
+    id = 'line_chart',
+    figure=plot_func() # gets initial data using argument defaults
 )
 
 types <- unique(crime$TYPE)
@@ -158,17 +158,17 @@ plot_func()
 app <- Dash$new()
 
 app$layout(
-  htmlDiv(
-      list(
+    htmlDiv(
+        list(
         
         # Header
         htmlDiv(
-          list(
-              htmlImg(src='https://img.icons8.com/wired/64/000000/policeman-male.png', style = list(float = 'left', marginTop = '10px', marginLeft = '8px')),
-              htmlH1('Vancouver Crime Stats', style = list(float = 'left', marginLeft = '15px')),
-              htmlDiv(list("Open source crime data from the City of Vancouver shown for neighbourhood comparison (", htmlA('Source', href='https://geodash.vpd.ca/opendata/'), ")"), style = list(position = 'absolute', float = 'left', marginTop = '60px', marginLeft = '90px'))
-              ),
-           style = list(position = 'absolute', width = '96%', height = '90px', backgroundColor = '#9ee6f6', border = '3px solid black')
+            list(
+                htmlImg(src='https://img.icons8.com/wired/64/000000/policeman-male.png', style = list(float = 'left', marginTop = '10px', marginLeft = '8px')),
+                htmlH1('Vancouver Crime Stats', style = list(float = 'left', marginLeft = '15px')),
+                htmlDiv(list("Open source crime data from the City of Vancouver shown for neighbourhood comparison (", htmlA('Source', href='https://geodash.vpd.ca/opendata/'), ")"), style = list(position = 'absolute', float = 'left', marginTop = '60px', marginLeft = '90px'))
+                ),
+            style = list(position = 'absolute', width = '96%', height = '90px', backgroundColor = '#9ee6f6', border = '3px solid black')
         ),
 
         # Crime Map
@@ -283,27 +283,27 @@ app$layout(
             style = list(float  = 'left', width = '36.5%', height = '910px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
         )
     )
-  )
+    )
 )
 
 app$callback(
-  output=list(id = 'line_chart', property='figure'),
-  params=list(input(id = 'year-slider', property='value'),
-              input(id = 'dd-chart', property='value'),
-              input(id = 'dd-chart-2', property='value'),
-              input(id = 'crime-chart', property='value'),
-              input(id = 'year-chart', property='value')),
-  function(year_range, location, location2, types, year) {
+    output=list(id = 'line_chart', property='figure'),
+    params=list(input(id = 'year-slider', property='value'),
+                input(id = 'dd-chart', property='value'),
+                input(id = 'dd-chart-2', property='value'),
+                input(id = 'crime-chart', property='value'),
+                input(id = 'year-chart', property='value')),
+    function(year_range, location, location2, types, year) {
     plot_func(start=year_range[1], end=year_range[2], neighbourhood_1=location, neighbourhood_2=location2, crime=types, time_scale=year)
-  })
+    })
 
 app$callback(
-  output=list(id = 'choropleth', property='figure'),
-  params=list(input(id = 'year-slider', property='value'),
-              input(id = 'crime-chart', property='value'),
-              input(id = 'slider-updatemode', property='value')),
-  function(year_range, crime_type, crime_thresh) {
+    output=list(id = 'choropleth', property='figure'),
+    params=list(input(id = 'year-slider', property='value'),
+                input(id = 'crime-chart', property='value'),
+                input(id = 'slider-updatemode', property='value')),
+    function(year_range, crime_type, crime_thresh) {
     plot_choropleth(year_init = year_range[1], year_end = year_range[2], crime_type = crime_type, crime_threshold = crime_thresh)
-  })
+    })
 
 app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
