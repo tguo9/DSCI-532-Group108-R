@@ -13,8 +13,8 @@ On the choropleth (crime map), the number of crimes in different neighbourhoods 
 In the line chart (crime trend chart), the count of crimes in a neighbourhood is shown as varied over a time scale. Two dropdowns are provided for selecting two neighbourhoods, and another for selecting the time scale.
 
 ## Functionalities
-- Crime Type: A drop down box that lets the user select the crime types occuring from 2003 to 2018. Default crime is all crime types combined together.
-- Years to Include: From 2003 to 2018. Select the year ranges. Default year range is from 2003 to 2018.
+- Crime Type: A drop down box that lets the user select the crime types occuring from 2003 to 2019. Default crime is all crime types combined together.
+- Years to Include: From 2003 to 2019. Select the year ranges. Default year range is from 2003 to 2019.
 - Neighbourhood 1: Neighbourhoods in Vancouver. Default is all neighbourhoods.
 - Neighbourhood 2: Neighbourhoods in Vancouver. Default is all neighbourhoods.
 - Time Scale: Select from year, month, day of the week or hour. Default time scale is year.
@@ -33,3 +33,9 @@ Please download/clone our repository and run it locally.
 We made this screenshot on 
 
 ![](img/App-Deployed-2.png)
+
+## Data Source
+
+[Vancouver Police Department](https://geodash.vpd.ca/opendata/)
+
+<a href="https://icons8.com/icon/49098/police">Police icon by Icons8</a>
