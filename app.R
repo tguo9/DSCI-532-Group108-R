@@ -165,7 +165,7 @@ app$layout(
           list(
               htmlImg(src='https://img.icons8.com/wired/64/000000/policeman-male.png', style = list(float = 'left', marginTop = '10px', marginLeft = '8px')),
               htmlH1('Vancouver Crime Stats', style = list(float = 'left', marginLeft = '15px')),
-              htmlDiv(children="Open source crime data from the City of Vancouver shown for neighbourhood comparison", style = list(position = 'absolute', float = 'left', marginTop = '60px', marginLeft = '90px'))
+              htmlDiv(list("Open source crime data from the City of Vancouver shown for neighbourhood comparison (", htmlA('Source', href='https://geodash.vpd.ca/opendata/'), ")"), style = list(position = 'absolute', float = 'left', marginTop = '60px', marginLeft = '90px'))
               ),
            style = list(position = 'absolute', width = '96%', height = '90px', backgroundColor = '#9ee6f6', border = '3px solid black')
         ),
@@ -224,7 +224,8 @@ app$layout(
                             ),
                             style = list(height = '200px', float = 'left', marginLeft = '30px', marginTop = '10px')
                         )
-                    )
+                    ),
+                    style = list(float = 'left', width = '100%')
                 ),
                 htmlDiv(
                     list(
@@ -234,7 +235,7 @@ app$layout(
                         htmlP('Adjusting the \"Crime Index Max\" bar can saturate neighborhoods with higher crime counts and reveal differences in lower crime count neighbourhoods'),
                         htmlP('Note that this function is slow and may take a few seconds to load')
                     ),
-                    style = list(width = '900px', marginLeft = '20px')
+                    style = list(width = '95%', marginLeft = '20px')
                 )
             ),
             style = list(float = 'left', width = '60%', height = '910px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
