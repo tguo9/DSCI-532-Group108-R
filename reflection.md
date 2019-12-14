@@ -16,6 +16,8 @@
 - Polish the app with formatting by creating a webste .css file (darken sliderbar colors).
 - Make X-axis of crime trend chart easier to read than intergers.
 - Fix the dashboard style so that dashboard components are not compressed at different browser zoom settings.
+- Fix title of crime trend chart where it is sometimes cut off for long crime type names.
+- Remove ploty elemnts for crime trend chart.
 
 ## TA Feedback Milestone 1
 - Updated teamwork contract to include general roles and responsibilities.
