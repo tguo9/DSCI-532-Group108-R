@@ -9,8 +9,8 @@ library(geojsonio)
 
 df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
-list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL')
-list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL')
+list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL') %>% arrange(NEIGHBOURHOOD)
+list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL') %>% arrange(TYPE)
 list_of_years = list('YEAR', 'MONTH', 'DAY OF WEEK', 'HOUR')
 min_year = df['YEAR'] %>% min()
 max_year = df['YEAR'] %>% max()
