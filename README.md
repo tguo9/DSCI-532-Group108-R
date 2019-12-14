@@ -39,3 +39,13 @@ We made this screenshot on
 [Vancouver Police Department](https://geodash.vpd.ca/opendata/)
 
 <a href="https://icons8.com/icon/49098/police">Police icon by Icons8</a>
+
+## Documents
+
+[Proposal](https://github.com/UBC-MDS/DSCI-532-Group108-R/blob/master/proposal.md)
+
+[LICENSE](https://github.com/UBC-MDS/DSCI-532-Group108-R/blob/master/LICENSE)
+
+[CONTRIBUTING](https://github.com/UBC-MDS/DSCI-532-Group108-R/blob/master/CONTRIBUTING.md)
+
+[CODE OF CONDUCT](https://github.com/UBC-MDS/DSCI-532-Group108-R/blob/master/CODE_OF_CONDUCT.md)
