@@ -228,10 +228,10 @@ app$layout(
                 ),
                 htmlDiv(
                     list(
-                        htmlP('Crime Index shows how the crime count of a neighborhood compares to other neighborhoods.'),
-                        htmlP('- If it equals 1, then this neighborhood has the highest crime count among all neighborhoods.'),
-                        htmlP('- If it equals 0, then this neighborhood has the lowest crime count among all neighborhoods'),
-                        htmlP('Adjusting the \"Crime Index Max\" bar can saturate neighborhoods with higher crime counts and reveal differences in lower crime count neighbourhoods'),
+                        htmlP('Crime Index shows how the crime count of a neighbourhood compares to other neighbourhoods.'),
+                        htmlP('- If it equals 1, then this neighbourhood has the highest crime count among all neighbourhoods.'),
+                        htmlP('- If it equals 0, then this neighbourhood has the lowest crime count among all neighbourhoods'),
+                        htmlP('Adjusting the \"Crime Index Max\" bar can saturate neighbourhoods with higher crime counts and reveal differences in lower crime count neighbourhoods'),
                         htmlP('Note that this function is slow and may take a few seconds to load')
                     ),
                     style = list(width = '900px', marginLeft = '20px')
