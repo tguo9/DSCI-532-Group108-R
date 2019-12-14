@@ -207,7 +207,7 @@ app$layout(
                             list(
                                 graph_choropleth
                             ),
-                            style = list(width = '80%', height = '500px', float = 'left')
+                            style = list(width = '80%', height = '500px', float = 'left', marginLeft = '20px')
                         ),
                         htmlDiv(
                             list(
@@ -235,10 +235,10 @@ app$layout(
                         htmlP('Adjusting the \"Crime Index Max\" bar can saturate neighbourhoods with higher crime counts and reveal differences in lower crime count neighbourhoods'),
                         htmlP('Note that this function is slow and may take a few seconds to load')
                     ),
-                    style = list(width = '900px')
+                    style = list(width = '900px', marginLeft = '20px')
                 )
             ),
-            style = list(float = 'left', width = '60%', height = '900px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
+            style = list(float = 'left', width = '60%', height = '910px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
         ),
 
         # Crime Trends
@@ -276,10 +276,10 @@ app$layout(
                     list(
                         graph_line
                     ),
-                    style = list(width = '95%', height = '500px')
+                    style = list(width = '95%', height = '500px', marginLeft = '20px')
                 )
             ),
-            style = list(float  = 'left', width = '36.5%', height = '900px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
+            style = list(float  = 'left', width = '36.5%', height = '910px', marginTop = '83px', backgroundColor = '#e0e0eb', border = '3px solid black')
         )
     )
   )
