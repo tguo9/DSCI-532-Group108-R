@@ -44,7 +44,8 @@ plot_choropleth <- function(year_init = 2010, year_end = 2018, crime_type = 'ALL
     ggplotly(full_dt %>%
         ggplot(mapping = aes(fill = .data[['min_max']])) +
         geom_sf(color = 'white', size = 0.2) +
-        scale_fill_viridis_c(option = 'viridis', 
+        scale_fill_gradient(low = '#CAFFA8',
+                            high = '#8B0000', 
                              name = "Crime Index", 
                              labels = comma, 
                              limits = c(0, crime_threshold)) +
