@@ -26,7 +26,7 @@ https://dsci-532-group108-milestone3.herokuapp.com/
 
 Since we used `sf` package in our project so we cannot deploy the app on heroku per [Firas's message on Slack](https://ubc-mds.slack.com/archives/C24J4AW3Z/p1576255148006900)
 
-Please download/clone our repository and run it locally. 
+Please [download](https://github.com/UBC-MDS/DSCI-532-Group108-R/archive/master.zip)/clone our repository and run it locally. 
 
 ## APP Screenshot
 
