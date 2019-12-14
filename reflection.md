@@ -1,4 +1,4 @@
-# Reflections: 2019-11-30 (Updated 2019-12-07)
+# Reflections: 2019-11-30 (Updated 2019-12-07, 2019-12-14)
 
 ## App Strengths
 - Comparison of neighbourhood crime counts easy to see in crime map with red = bad, green = good.
@@ -7,14 +7,15 @@
 - Dashboard layout is simple and doesn't overhwlem the user.
 
 ## App Weaknesses
-- Crime map unit of measurement is normalized crime counts. The general public may not understand what normalization is and this could cause confusion. To help the user, a tool tip was added to the map with raw crime counts, which is a more familiar unit of measurement, and an explaianation of crime index.
+- Crime map unit of measurement is normalized crime counts. The general public may not understand what normalization is and this could cause confusion. To help the user, a tool tip was added to the map with raw crime counts, which is a more familiar unit of measurement (only available in python version of app), and an explaianation of crime index.
 - Some neighbourhoods artificially look better on the crime map than actual because they are smaller. A better crime index than count to use would be to use count/person, count/household, or count/area for each neighbourhood.
-- The crime inndex slider bar is slow to update the crime map (takes a few seconds).
+- The crime index slider bar is slow to update the crime map (takes a few seconds).
 
 ## Future Improvements
-- Adjust crime map metric to be weighted per size or population of neighbourhood. Neighbourhood size/population is not included in the native data set, so this would need to be obtained from an alternative source.
+- Adjust crime map metric to be weighted per size or population of neighbourhood. Neighbourhood size/population is not included in the native data set. This would need to be obtained from an alternative source.
 - Polish the app with formatting by creating a webste .css file (darken sliderbar colors).
 - Make X-axis of crime trend chart easier to read than intergers.
+- Fix the dashboard style so that dashboard components are not compressed at different browser zoom settings.
 
 ## TA Feedback Milestone 1
 - Updated teamwork contract to include general roles and responsibilities.
@@ -48,3 +49,8 @@ C. Cite data source
 - Point A was included via peer feedback
 - Point B was unclear and not included (GDP) is not in dashboard.
 - Point C will be implemented in future updates as time did not permit incorporation
+
+## Updates from TA Feedback/General Milestone 3
+- Speed of choropleth was increased by moving data wrangling to outside plot functions.
+- Asthetics were cleaned up and some typos corrected.
+- Link added to data source
