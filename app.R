@@ -11,7 +11,7 @@ df <- read_csv('data/crimedata_csv_all_years_modified.csv')
 
 list_of_locations <- df['NEIGHBOURHOOD'] %>% drop_na() %>% distinct() %>% add_row('NEIGHBOURHOOD' = 'ALL')
 list_of_crimes = df['TYPE'] %>% distinct() %>% add_row('TYPE' = 'ALL')
-list_of_years = list('YEAR', 'MONTH', 'DAY_OF_WEEK', 'HOUR')
+list_of_years = list('YEAR', 'MONTH', 'DAY OF WEEK', 'HOUR')
 min_year = df['YEAR'] %>% min()
 max_year = df['YEAR'] %>% max()
 yearMarks <- lapply(unique(df$YEAR), as.character)
@@ -55,28 +55,34 @@ graph_choropleth <- dccGraph(
   figure=plot_choropleth() # gets initial data using argument defaults
 )
 
-plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale=YEAR) {
-    
+plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', neighbourhood_2='ALL', crime='ALL', time_scale='YEAR') {
+    # !!sym(time_scale)
+
     df <- df_line %>% filter(YEAR >= start & YEAR <= end)
     crime_title = crime
     neighbourhood_1_title = neighbourhood_1
     neighbourhood_2_title = neighbourhood_2
+
+    if (time_scale == 'DAY OF WEEK') {
+
+        time_scale <- 'DAY_OF_WEEK'
+    }
     
     if (crime == 'ALL') {
             crime_title = 'All Crimes'
             if (neighbourhood_1 == 'ALL') {
                 neighbourhood_1_title = 'All Neighbourhoods'
                     df1 <- df %>% 
-                        group_by({{time_scale}}) %>%
+                        group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
 
             } else {
                 df1 <- df %>% 
                     filter(NEIGHBOURHOOD == neighbourhood_1) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
         }   
     } else {
     
@@ -84,16 +90,16 @@ plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', n
                 neighbourhood_1_title = 'All Neighbourhoods'
                 df1 <- df %>% 
                 filter(TYPE == crime) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
             
         } else {
             df1 <- df %>% 
                 filter((NEIGHBOURHOOD == neighbourhood_1 & TYPE == crime)) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
         
     }
 }
@@ -103,16 +109,16 @@ plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', n
         if (neighbourhood_2 == 'ALL') {
                 neighbourhood_2_title = 'All Neighbourhoods'
                 df2 <- df %>% 
-                    group_by({{time_scale}}) %>%
+                    group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
                 
         } else {
             df2 <- df %>% 
                 filter(NEIGHBOURHOOD == neighbourhood_2) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
         }   
     } else {
         
@@ -120,21 +126,21 @@ plot_func <- function(df_line=df, start=2010, end=2018, neighbourhood_1='ALL', n
                 neighbourhood_2_title = 'All Neighbourhoods'
                 df2 <- df %>% 
                 filter(TYPE == crime) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
             
         } else {
             df2 <- df %>% 
                 filter((NEIGHBOURHOOD == neighbourhood_2 & TYPE == crime)) %>%
-                group_by({{time_scale}}) %>%
+                group_by(!!sym(time_scale)) %>%
                 tally() %>% 
-    mutate({{time_scale}} := as.factor({{time_scale}}))
+    mutate(!!sym(time_scale) := as.factor(!!sym(time_scale)))
     }
                     }
     ggplotly(ggplot() +
-        geom_line(df1, mapping = aes(x={{time_scale}}, y=n, group=1), color='blue') +
-        geom_line(df2, mapping = aes(x={{time_scale}}, y=n, group=1), color='red') +
+        geom_line(df1, mapping = aes(x=!!sym(time_scale), y=n, group=1), color='blue') +
+        geom_line(df2, mapping = aes(x=!!sym(time_scale), y=n, group=1), color='red') +
         ylab('Number of Crimes') +
         ggtitle(paste(neighbourhood_1_title, "vs", neighbourhood_2_title, ":", crime_title)) +
         theme_bw())
@@ -286,7 +292,7 @@ app$callback(
               input(id = 'crime-chart', property='value'),
               input(id = 'year-chart', property='value')),
   function(year_range, location, location2, types, year) {
-    plot_func(start=year_range[1], end=year_range[2], neighbourhood_1=location, neighbourhood_2=location2, crime=types, time_scale=!!sym(year))
+    plot_func(start=year_range[1], end=year_range[2], neighbourhood_1=location, neighbourhood_2=location2, crime=types, time_scale=year)
   })
 
 app$callback(
